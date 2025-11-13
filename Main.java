@@ -1,33 +1,56 @@
+/**
+ * Демонстрация работы с текстом и репозиторием
+ * Рефакторинг: добавлена работа с TextRepository
+ */
 public class Main {
     public static void main(String[] args) {
-        Text text = new Text("Заголовок: Введение в Java");
-        text.addParagraph("Первый абзац: Это начало текста.");
-        text.addParagraph("Второй абзац: Описание задания.");
+        // Создание текстов
+        Text text1 = new Text("Заголовок: Введение в Java");
+        text1.addParagraph("Первый абзац: Это начало текста.");
+        text1.addParagraph("Второй абзац: Описание задания.");
+        
+        Text text2 = new Text("Заголовок: Продвинутая Java");
+        text2.addParagraph("Абзац 1: Изучение коллекций.");
+        text2.addParagraph("Абзац 2: Работа с потоками.");
 
-        // Дописываем к первому абзацу
-        text.appendToParagraph(0, " Дополнение к первому абзацу.");
-        // Дописываем к последнему абзацу
-        text.appendToLastParagraph(" Дополнение ко второму абзацу.");
+        // Рефакторинг: создание и использование репозитория
+        TextRepository repository = new TextRepository();
+        
+        // Добавление текстов в репозиторий
+        repository.addText(text1);
+        repository.addText(text2);
+        
+        System.out.println("\n=== Количество текстов в репозитории: " + repository.getTextCount() + " ===");
 
-        System.out.println("=== Печать заголовка ===");
-        text.printTitle();
+        // Демонстрация оригинальной функциональности
+        text1.appendToParagraph(0, " Дополнение к первому абзацу.");
+        text1.appendToLastParagraph(" Дополнение ко второму абзацу.");
+
+        System.out.println("\n=== Печать заголовка ===");
+        text1.printTitle();
 
         System.out.println("\n=== Печать текста ===");
-        text.printText();
- 
-        System.out.println("=== getFullText() ===");
-        System.out.println(text.getFullText());
+        text1.printText();
+        
+        System.out.println("\n=== Поиск текстов по заголовку ===");
+        List<Text> foundTexts = repository.findTextsByTitle("Java");
+        for (Text text : foundTexts) {
+            System.out.println("Найден: " + text.getTitle());
+        }
 
-        System.out.println("\n=== toString() (короткое представление объекта) ===");
-        System.out.println(text.toString());
+        // Демонстрация методов репозитория
+        System.out.println("\n=== Обновление текста в репозитории ===");
+        Text updatedText = new Text("Заголовок: Обновленное введение в Java");
+        updatedText.addParagraph("Новый абзац: Обновленное содержание.");
+        repository.updateText(0, updatedText);
 
-        // Демонстрация equals/hashCode
-        Text text2 = new Text("Заголовок: Введение в Java");
-        text2.addParagraph("Первый абзац: Это начало текста. Дополнение к первому абзацу.");
-        text2.addParagraph("Второй абзац: Описание задания. Дополнение ко второму абзацу.");
-
-        System.out.println("\ntext.equals(text2) = " + text.equals(text2));
-        System.out.println("text.hashCode() = " + text.hashCode());
-        System.out.println("text2.hashCode() = " + text2.hashCode());
+        System.out.println("\n=== Все тексты в репозитории ===");
+        for (Text text : repository.getAllTexts()) {
+            System.out.println(text.getTitle());
+        }
+        
+        System.out.println("\n=== Удаление текста ===");
+        repository.removeText(1);
+        System.out.println("Количество текстов после удаления: " + repository.getTextCount());
     }
 }
