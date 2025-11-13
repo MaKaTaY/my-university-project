@@ -58,6 +58,10 @@ class Library {
     }
 }
 
+/**
+ * Демонстрация работы библиотечной системы
+ * Рефакторинг: добавлена демонстрация новых функций
+ */
 public class LibraryDemo {
     public static void main(String[] args) {
         System.out.println("=== ДЕМОНСТРАЦИЯ БИБЛИОТЕЧНОЙ СИСТЕМЫ ===\n");
@@ -73,19 +77,34 @@ public class LibraryDemo {
         
         scienceLibrary.addBook(new Book("Философия Java", "Брюс Эккель", 2006));
         scienceLibrary.addBook(new Book("Совершенный код", "Стив Макконнелл", 2004));
+        scienceLibrary.addBook(new Book("Java. Эффективное программирование", "Джошуа Блох", 2001));
         
-        // Вывод информации
-        System.out.println(centralLibrary);
+        // Рефакторинг: демонстрация новых функций
+        System.out.println("\n=== НОВЫЕ ФУНКЦИИ (рефакторинг) ===");
+        
+        // Статистика библиотек
+        System.out.println(centralLibrary.getLibraryStats());
+        System.out.println(scienceLibrary.getLibraryStats());
+        
+        // Поиск по году
+        System.out.println("\nКниги 1869 года в центральной библиотеке:");
+        centralLibrary.getBooksByYear(1869).forEach(book -> 
+            System.out.println("  - " + book.getTitle()));
+        
+        // Поиск по названию
+        System.out.println("\nКниги о Java в научной библиотеке:");
+        scienceLibrary.getBooksByTitle("Java").forEach(book -> 
+            System.out.println("  - " + book));
+        
+        // Удаление книги
+        System.out.println("\nУдаление книги 'Война и мир':");
+        centralLibrary.removeBook("Война и мир", "Лев Толстой");
+        System.out.println("Книг после удаления: " + centralLibrary.getBookCount());
+        
+        // Вывод оригинальной информации
+        System.out.println("\n" + centralLibrary);
         System.out.println("Книги Достоевского:");
-        List<Book> dostoevskyBooks = centralLibrary.getBooksByAuthor("Фёдор Достоевский");
-        for (Book book : dostoevskyBooks) {
-            System.out.println("  - " + book.getTitle() + " (" + book.getPublicationYear() + ")");
-        }
-        
-        System.out.println("\n" + scienceLibrary);
-        System.out.println("Все книги:");
-        for (Book book : scienceLibrary.getAllBooks()) {
-            System.out.println("  - " + book);
-        }
+        centralLibrary.getBooksByAuthor("Фёдор Достоевский").forEach(book -> 
+            System.out.println("  - " + book.getTitle() + " (" + book.getPublicationYear() + ")"));
     }
 }
